@@ -1,0 +1,32 @@
+-- Create the database
+CREATE DATABASE ccc;
+USE ccc;
+
+-- Create the members table first because resets will reference it
+CREATE TABLE userlogin (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    Email VARCHAR(255) NOT NULL UNIQUE,
+    Username VARCHAR(255) NOT NULL,
+    Password VARCHAR(255) NOT NULL
+);
+
+-- Create the resets table and reference members.Email with a foreign key
+CREATE TABLE resets (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    Code VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) NOT NULL,
+    Expire INT NOT NULL,
+    INDEX (Code),
+    INDEX (Email),
+    INDEX (Expire),
+    CONSTRAINT fk_members_email FOREIGN KEY (Email) REFERENCES userlogin(Email)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- Create the admin_login table
+CREATE TABLE admin_login (
+    admin_id INT PRIMARY KEY AUTO_INCREMENT,
+    admin_email VARCHAR(255) NOT NULL,
+    admin_name VARCHAR(255) NOT NULL,
+    admin_pass VARCHAR(255) NOT NULL
+);
